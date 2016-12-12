@@ -16,6 +16,10 @@ public class LoupGarous {
         return nom;
     }
 
+    public String toString(){
+        return "Le nom est "+ this.getNom()+" numéro de carte :"+this.getNum()+"";
+
+    }
     public void setNom(String nom) {
         this.nom = nom;
     }
