@@ -5,11 +5,9 @@ package com.company.Jeu;
  */
 public class LoupGarous {
     private String nom;
-    private int num;
 
-    public LoupGarous(String nom, int num) {
+    public LoupGarous(String nom) {
         this.nom = nom;
-        this.num = num;
     }
 
     public String getNom() {
@@ -17,18 +15,11 @@ public class LoupGarous {
     }
 
     public String toString(){
-        return "Le nom est "+ this.getNom()+" numéro de carte :"+this.getNum()+"";
+        return "Le nom est "+ this.getNom()+"";
 
     }
     public void setNom(String nom) {
         this.nom = nom;
     }
 
-    public int getNum() {
-        return num;
-    }
-
-    public void setNum(int num) {
-        this.num = num;
-    }
 }

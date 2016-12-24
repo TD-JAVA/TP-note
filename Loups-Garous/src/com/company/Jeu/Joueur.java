@@ -12,9 +12,8 @@ package com.company.Jeu;
  */
 public class Joueur {
 
-    public Joueur(String nom, String prenom) {
+    public Joueur(String nom) {
         this.nom = nom;
-        this.prenom = prenom;
     }
     private String nom,prenom;
 
@@ -26,11 +25,4 @@ public class Joueur {
         this.nom = nom;
     }
 
-    public String getPrenom() {
-        return prenom;
-    }
-
-    public void setPrenom(String prenom) {
-        this.prenom = prenom;
-    }
 }
