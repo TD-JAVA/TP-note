@@ -15,7 +15,7 @@ public class LoupGarous {
     }
 
     public String toString(){
-        return "Le nom est "+ this.getNom()+"";
+        return " "+ this.getNom()+"";
 
     }
     public void setNom(String nom) {

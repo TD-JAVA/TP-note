@@ -13,6 +13,11 @@ public class Villageois {
         this.numVillageois = numVillageois;
     }
 
+    public String toString(){
+        return " "+ this.getNom()+" "+getNumVillageois();
+
+    }
+
     public String getNom() {
         return nom;
     }

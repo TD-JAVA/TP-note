@@ -18,23 +18,20 @@ public class Jeu {
 
     private ArrayList<Joueur> tabJoueur;
     private ArrayList<LoupGarous> listLp;
+    private ArrayList<Villageois> listVilla;
     private int nbJoueurs;
     private boolean nuit=false;
 
 
 
     public void debuter() {
+        this.listVilla= new ArrayList<Villageois>();
         this.tabJoueur = new ArrayList<Joueur>();
         this.listLp = new ArrayList<LoupGarous>();
         Scanner sc = new Scanner(System.in);
         System.out.println("Bienvenue dans le jeu du Loup Garou, pour commencer à jouer, veuillez indiquer le nombre de joueurs participant au jeu :");
 
         this.nbJoueurs = sc.nextInt(); // On récupère le nombre de joueurs
-        int max = 4;
-        int min = 1;
-        int loupsMax =0;
-        Random ra = new Random();
-
         //On créé les joueurs et on les ajoutent au tableau des joueurs tabJoueur  <=== Erreur de collection == liste et pas tab
         for (int i = 0; i < nbJoueurs; i++) {
             String nom;
@@ -45,32 +42,41 @@ public class Jeu {
             Joueur j = new Joueur(nom);
             tabJoueur.add(j);
 
-            
+
+            becomeVillageois(j);
             role(j);
         }
+        goNuit();
 
-        //
     }
+
+    public void becomeVillageois(Joueur j){
+        int carte = 1;
+        Villageois v = new Villageois(j.getNom(),carte);
+        listVilla.add(v);
+        carte+=1;
+        System.out.println(listVilla+" liste villa "+carte);
+        }
+
+
 
     public void role(Joueur j) {
         int max = 3;
         int min = 1;
-        int loupsMax =0;
         Random ra = new Random();
         int fonction = min + ra.nextInt(max-min);
-           for (int i=0; i<tabJoueur.size(); i++){
-               if ((fonction==2) && (loupsMax!=2)){
+               if ((fonction==2) && (listLp.size()!=2)){
                    LoupGarous lp = new LoupGarous(j.getNom());
                    listLp.add(lp);
                }
-               loupsMax +=1;
-           }
-           System.out.println(listLp+" Liste LP");
+        System.out.println(listLp+" Liste LP");
         System.out.println(tabJoueur+" Liste Joueur");
     }
 
 
-    public void nuit() {
+    public void goNuit() {
+        nuit=true;
+        System.out.println("La nuit est là !");
 
     }
 

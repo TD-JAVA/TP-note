@@ -17,6 +17,10 @@ public class Joueur {
     }
     private String nom,prenom;
 
+    public String toString(){
+        return " "+ this.getNom()+" ";
+    }
+
     public String getNom() {
         return nom;
     }
