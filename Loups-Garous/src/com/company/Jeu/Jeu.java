@@ -29,34 +29,36 @@ public class Jeu {
         this.tabJoueur = new ArrayList<Joueur>();
         this.listLp = new ArrayList<LoupGarous>();
         Scanner sc = new Scanner(System.in);
+        int numCarte = 1;
         System.out.println("Bienvenue dans le jeu du Loup Garou, pour commencer à jouer, veuillez indiquer le nombre de joueurs participant au jeu :");
 
         this.nbJoueurs = sc.nextInt(); // On récupère le nombre de joueurs
         //On créé les joueurs et on les ajoutent au tableau des joueurs tabJoueur  <=== Erreur de collection == liste et pas tab
         for (int i = 0; i < nbJoueurs; i++) {
             String nom;
+
             Scanner sc2 = new Scanner(System.in);
 
             System.out.println("Veuillez renseigner le nom du joueur numéro " + i + "");
             nom = sc2.nextLine();
-            Joueur j = new Joueur(nom);
+            Joueur j = new Joueur(nom,numCarte);
             tabJoueur.add(j);
-
-
             becomeVillageois(j);
             role(j);
+            numCarte+=1;
+
         }
         goNuit();
 
     }
 
     public void becomeVillageois(Joueur j){
-        int carte = 1;
-        Villageois v = new Villageois(j.getNom(),carte);
+
+        Villageois v = new Villageois(j.getNom(),j.getCarte());
         listVilla.add(v);
-        carte+=1;
-        System.out.println(listVilla+" liste villa "+carte);
-        }
+        System.out.println(listVilla+" liste villa "+v.getNumVillageois());
+
+    }
 
 
 

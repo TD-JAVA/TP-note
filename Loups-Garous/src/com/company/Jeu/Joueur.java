@@ -11,11 +11,14 @@ package com.company.Jeu;
  * @author Seb
  */
 public class Joueur {
+    private String nom;
+    private int carte;
 
-    public Joueur(String nom) {
+    public Joueur(String nom, int carte) {
         this.nom = nom;
+        this.carte=carte;
     }
-    private String nom,prenom;
+
 
     public String toString(){
         return " "+ this.getNom()+" ";
@@ -29,4 +32,11 @@ public class Joueur {
         this.nom = nom;
     }
 
+    public int getCarte() {
+        return carte;
+    }
+
+    public void setCarte(int carte) {
+        this.carte = carte;
+    }
 }
