@@ -19,6 +19,7 @@ public class Jeu {
     private ArrayList<Joueur> tabJoueur;
     private ArrayList<LoupGarous> listLp;
     private ArrayList<Villageois> listVilla;
+    private ArrayList<Joueur> listVictime;
     private int nbJoueurs;
     private boolean nuit=false;
 
@@ -49,7 +50,44 @@ public class Jeu {
 
         }
         goNuit();
+        choixVictime();
 
+    }
+
+    public void choixVictime(){
+        this.listVictime = new ArrayList<>();
+        for (int i =0; i<listLp.size();i++){
+            int numVictime;
+            Scanner sc = new Scanner(System.in);
+            System.out.println("Loup garou, veuillez saisir une victime :");
+            numVictime = sc.nextInt();
+            if (numVictime==1){
+                listVictime.add(tabJoueur.get(0));
+            }else if (numVictime==2){
+                listVictime.add(tabJoueur.get(1));
+            }else if (numVictime==3){
+                listVictime.add(tabJoueur.get(2));
+            }else if (numVictime==4){
+                listVictime.add(tabJoueur.get(3));
+            }else if (numVictime==5){
+                listVictime.add(tabJoueur.get(4));
+            }else if (numVictime==6){
+                listVictime.add(tabJoueur.get(5));
+            }else if (numVictime==7){
+                listVictime.add(tabJoueur.get(6));
+            }else if (numVictime==8){
+                listVictime.add(tabJoueur.get(7));
+            }else if (numVictime==9){
+                listVictime.add(tabJoueur.get(8));
+            }else if (numVictime==10){
+                listVictime.add(tabJoueur.get(9));
+            }else if (numVictime==11){
+                listVictime.add(tabJoueur.get(10));
+            }else if (numVictime==12){
+                listVictime.add(tabJoueur.get(12));
+            }
+        }
+        System.out.println(listVictime+" liste des victimes");
     }
 
     public void becomeVillageois(Joueur j){
