@@ -31,26 +31,29 @@ public class Jeu {
         this.listLp = new ArrayList<LoupGarous>();
         Scanner sc = new Scanner(System.in);
         int numCarte = 1;
+        int joueurJeu=1;
         System.out.println("Bienvenue dans le jeu du Loup Garou, pour commencer à jouer, veuillez indiquer le nombre de joueurs participant au jeu :");
 
         this.nbJoueurs = sc.nextInt(); // On récupère le nombre de joueurs
         //On créé les joueurs et on les ajoutent au tableau des joueurs tabJoueur  <=== Erreur de collection == liste et pas tab
         for (int i = 0; i < nbJoueurs; i++) {
             String nom;
-
             Scanner sc2 = new Scanner(System.in);
 
-            System.out.println("Veuillez renseigner le nom du joueur numéro " + i + "");
+            System.out.println("Veuillez renseigner le nom du joueur numéro " + joueurJeu + "");
             nom = sc2.nextLine();
             Joueur j = new Joueur(nom,numCarte);
             tabJoueur.add(j);
             becomeVillageois(j);
             role(j);
             numCarte+=1;
+            joueurJeu++;
 
         }
+
         goNuit();
         choixVictime();
+        goJour();
 
     }
 
@@ -61,12 +64,10 @@ public class Jeu {
         int victime2=3;
         Random ra = new Random();
         int numVictime;
+        int nbLP=1;
         for (int i =0; i<listLp.size();i++){
-
-
-
             Scanner sc = new Scanner(System.in);
-            System.out.println("Loup garou, veuillez saisir une victime :");
+            System.out.println("Loup garou "+nbLP+" , veuillez saisir une victime :");
             numVictime = sc.nextInt();
             if (numVictime==1){
 
@@ -108,6 +109,7 @@ public class Jeu {
 
 
             }
+            nbLP++;
 
         }
 
@@ -164,6 +166,13 @@ public class Jeu {
     public void goNuit() {
         nuit=true;
         System.out.println("La nuit est là !");
+
+    }
+
+    public void goJour() {
+        nuit=false;
+        System.out.println("Le jour ce lève!");
+        System.out.println(tabJoueur+" Nouveau tab joueurs");
 
     }
 
