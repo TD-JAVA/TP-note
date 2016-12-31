@@ -55,16 +55,22 @@ public class Jeu {
     }
 
     public void choixVictime(){
-        this.listVictime = new ArrayList<>();
 
+        this.listVictime = new ArrayList<>();
+        int victime1=1;
+        int victime2=3;
+        Random ra = new Random();
+        int numVictime;
         for (int i =0; i<listLp.size();i++){
-            int numVictime;
+
+
+
             Scanner sc = new Scanner(System.in);
             System.out.println("Loup garou, veuillez saisir une victime :");
             numVictime = sc.nextInt();
             if (numVictime==1){
-                listVictime.add(tabJoueur.get(0));
 
+                listVictime.add(tabJoueur.get(0));
             }else if (numVictime==2){
                 listVictime.add(tabJoueur.get(1));
 
@@ -76,12 +82,12 @@ public class Jeu {
 
             }else if (numVictime==5){
                 listVictime.add(tabJoueur.get(4));
-
             }else if (numVictime==6){
                 listVictime.add(tabJoueur.get(5));
 
             }else if (numVictime==7){
                 listVictime.add(tabJoueur.get(6));
+
 
             }else if (numVictime==8){
                 listVictime.add(tabJoueur.get(7));
@@ -92,17 +98,42 @@ public class Jeu {
             }else if (numVictime==10){
                 listVictime.add(tabJoueur.get(9));
 
+
             }else if (numVictime==11){
                 listVictime.add(tabJoueur.get(10));
 
+
             }else if (numVictime==12){
                 listVictime.add(tabJoueur.get(11));
+
 
             }
 
         }
 
+        int fonction = victime1 + ra.nextInt(victime2-victime1);
+        for (int i=0; i<listVictime.size();i++){
+            if (fonction==1){
+                if (tabJoueur.contains(listVictime.get(0))){
+                    tabJoueur.remove(listVictime.get(0));
+                }else{
+                    System.out.println("Surprise");
+                }
+            }else if (fonction==2){
+                if (tabJoueur.contains(listVictime.get(1))){
+                    tabJoueur.remove(listVictime.get(1));
+                }else{
+                    System.out.println("Surprise 4");
+                }
+            }else {
+                System.out.println("ZIZI");
+            }
+        }
+
+        System.out.println(tabJoueur+" Nouveau tab joueurs");
         System.out.println(listVictime+" liste des victimes");
+        listVictime.clear();
+        System.out.println(listVictime+" liste des victimes 2");
 
     }
 
