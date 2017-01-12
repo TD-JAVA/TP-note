@@ -53,13 +53,51 @@ public class Jeu {
 
         }
         while (!(verifFinPartie(this))){
+            System.out.println(listVilla+" Voici la liste actuelle des joueurs "+tabJoueur);
+
             goNuit();
             choixVictime();
             goJour();
+            choixVillageois();
         }
         finPartie(this);
 
 
+    }
+
+    public void choixVillageois() {
+        String nom = "";
+        boolean b = false;
+        int[] vote=new int[tabJoueur.size()];
+        Arrays.fill(vote, 0);
+        for (int i = 0; i < tabJoueur.size(); i++) {
+            while (!(b)) {
+                Scanner sc = new Scanner(System.in);
+                System.out.println(tabJoueur.get(i).getNom() + " , veuillez saisir un villageois qui selon vous est un loup garou :");
+                nom = sc.nextLine();
+                for (int j = 0; j < tabJoueur.size(); j++) {
+
+                    if (tabJoueur.get(j).getNom().contains(nom)) {
+                        vote[j] +=1;
+                        b= true;
+                        System.out.print("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+                    } else if (tabJoueur.size() == j) {
+                        System.out.println("Ce joueur n'existe pas, veuillez réésayer :");
+                    }
+                }
+            }
+            b = false;
+        }
+        System.out.println("tableau des votes :"+Arrays.toString(vote));
+    }
+
+    public int getNumVillageois(Jeu j,String nom){
+        for(int i=0;i<j.tabJoueur.size();i++){
+            if(j.tabJoueur.get(i).getNom()== nom){
+                return i;
+            }
+        }
+        return -1;
     }
 
     public void choixVictime() {
@@ -73,6 +111,7 @@ public class Jeu {
         int nbLP = 1;
 
         for (int i = 0; i < listLp.size(); i++) {
+
             while (!(b)) {
                 Scanner sc = new Scanner(System.in);
                 System.out.println("Loup garou " + nbLP + " , veuillez saisir une victime :");
@@ -85,6 +124,7 @@ public class Jeu {
 
                             listVictime.add(tabJoueur.get(j));
                             b = true;
+                            System.out.print("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
 
                         } else if (tabJoueur.size()==j) {
                             System.out.println("Ce joueur n'existe pas, veuillez réésayer :");
@@ -102,7 +142,7 @@ public class Jeu {
                     tabJoueur.remove(listVictime.get(0));
                     supprimerVillageois(this,listVictime.get(0).getNom());
                 }else{
-                    System.out.println("Surprise");
+                    //System.out.println("Surprise");
                 }
             }else if (fonction==2){
                 if (tabJoueur.contains(listVictime.get(1))){
@@ -113,7 +153,7 @@ public class Jeu {
                     System.out.println("Surprise 4");
                 }
             }else {
-                System.out.println("ZIZI");
+                System.out.println("ghghhg");
             }
         }
 
@@ -126,7 +166,7 @@ public class Jeu {
 
         Villageois v = new Villageois(j.getNom(),j.getCarte());
         listVilla.add(v);
-        System.out.println(listVilla+" liste villa "+v.getNumVillageois());
+        //System.out.println(listVilla+" liste villa "+v.getNumVillageois());
 
     }
 
@@ -141,8 +181,8 @@ public class Jeu {
                    LoupGarous lp = new LoupGarous(j.getNom());
                    listLp.add(lp);
                }
-        System.out.println(listLp+" Liste LP");
-        System.out.println(tabJoueur+" Liste Joueur");
+        //System.out.println(listLp+" Liste LP");
+        //System.out.println(tabJoueur+" Liste Joueur");
     }
 
 
@@ -186,6 +226,15 @@ public class Jeu {
             }
         }
     }
+
+    public void supprimerLoup(Jeu j,String n){
+        for (int i=0;i<listLp.size();i++){
+            if(listLp.get(i).getNom()==n){
+                listLp.remove(listLp.get(i));
+            }
+        }
+    }
+
 
 
     public void setTabJoueur(ArrayList<Joueur> tabJoueur) {
