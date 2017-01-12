@@ -40,10 +40,17 @@ public class Jeu {
         //On créé les joueurs et on les ajoutent au tableau des joueurs tabJoueur  <=== Erreur de collection == liste et pas tab
         for (int i = 0; i < nbJoueurs; i++) {
             String nom;
-            Scanner sc2 = new Scanner(System.in);
+
 
             System.out.println("Veuillez renseigner le nom du joueur numéro " + joueurJeu + "");
+            Scanner sc2 = new Scanner(System.in);
             nom = sc2.nextLine();
+
+            while(verifDoublonNom(this,nom)){
+                System.out.println("Ce nom existe déjà ! Veuillez entrer un autre nom");
+                sc2 = new Scanner(System.in);
+                nom = sc2.nextLine();
+            }
             Joueur j = new Joueur(nom,numCarte);
             tabJoueur.add(j);
             becomeVillageois(j);
@@ -53,8 +60,6 @@ public class Jeu {
 
         }
         while (!(verifFinPartie(this))){
-            System.out.println(listVilla+" Voici la liste actuelle des joueurs "+tabJoueur);
-
             goNuit();
             choixVictime();
             goJour();
@@ -188,14 +193,15 @@ public class Jeu {
 
     public void goNuit() {
         nuit=true;
-        System.out.println("La nuit est là !");
+        System.out.println("///////// La nuit est là ! ///////////");
+        System.out.println(" Voici la liste actuelle des joueurs "+tabJoueur);
 
     }
 
     public void goJour() {
         nuit=false;
-        System.out.println("Le jour ce lève!");
-        System.out.println(tabJoueur+" Nouveau tab joueurs");
+        System.out.println("///////// Le jour se lève ! ///////////");
+        System.out.println(" Voici la liste actuelle des joueurs "+tabJoueur+"\n");
 
     }
 
@@ -233,6 +239,19 @@ public class Jeu {
                 listLp.remove(listLp.get(i));
             }
         }
+    }
+
+    public boolean verifDoublonNom(Jeu j,String nom){
+        boolean trouve = false;
+        for(int i=0;i<j.tabJoueur.size();i++){
+            if(j.tabJoueur.get(i).getNom().equals(nom)){
+                trouve=true;
+                return trouve;
+            }
+        }
+
+
+        return trouve;
     }
 
 
