@@ -12,6 +12,7 @@ import java.util.Arrays;
 import java.util.Random;
 import java.util.Scanner;
 
+
 /**
  *
  * @author Seb
@@ -53,11 +54,13 @@ public class Jeu {
             }
             Joueur j = new Joueur(nom,numCarte);
             tabJoueur.add(j);
+
             becomeVillageois(j);
             role(j);
+
             numCarte+=1;
             joueurJeu++;
-
+            System.out.println(listLp);
         }
         while (!(verifFinPartie(this))){
             goNuit();
@@ -94,19 +97,39 @@ public class Jeu {
             b = false;
         }
         System.out.println("tableau des votes :"+Arrays.toString(vote));
+        if(choixVote(this,vote)){
+            for (int k = 0; k < tabJoueur.size(); k++) {
+                if(vote[k]  == Arrays.stream(vote).max().getAsInt()){
+                    System.out.println("Les villageois ont choisi la victime ! "+tabJoueur.get(k).getNom()+" est éxécuté !");
+
+                    for(int l=0;l<listLp.size();l++){
+                        if((tabJoueur.get(k).getNom()==listLp.get(l).getNom())){
+                            System.out.println(tabJoueur.get(k).getNom()+" était un loup !");
+                            listLp.remove(listLp.get(l));
+                        }
+                        else{
+                            int numVillageois = getNumVillageois(this,tabJoueur.get(k).getNom());
+                            listVilla.remove(listVilla.get(numVillageois));
+                            l= tabJoueur.size();
+                        }
+                    }
+                    tabJoueur.remove(tabJoueur.get(k));
+                }
+            }
+
+        }
+        else{
+            System.out.println("Egalité entre plusieurs joueurs, veuillez recommencer le vote :");
+            choixVillageois();
+        }
     }
 
-    public int getNumVillageois(Jeu j,String nom){
-        for(int i=0;i<j.tabJoueur.size();i++){
-            if(j.tabJoueur.get(i).getNom()== nom){
-                return i;
-            }
-        }
-        return -1;
-    }
+
+
+
 
     public void choixVictime() {
-
+        System.out.println(tabJoueur.get(0).getCarte());
         this.listVictime = new ArrayList<>();
         boolean b = false;
         int victime1 = 1;
@@ -120,6 +143,7 @@ public class Jeu {
             while (!(b)) {
                 Scanner sc = new Scanner(System.in);
                 System.out.println("Loup garou " + nbLP + " , veuillez saisir une victime :");
+                System.out.println("Voici la liste des victimes disponibles :"+listVilla);
                 numVictime = sc.next();
                 //System.out.println(tabJoueur.get(0).getNom());
 
@@ -139,31 +163,40 @@ public class Jeu {
             b = false;
             nbLP++;
         }
+        if (listLp.size() != 1) {
+            int fonction = victime1 + ra.nextInt(victime2-victime1);
+            for (int i=0; i<listVictime.size();i++){
+                if (fonction==1){
+                    if (tabJoueur.contains(listVictime.get(0))){
+                        tabJoueur.remove(listVictime.get(0));
+                        supprimerVillageois(this,listVictime.get(0).getNom());
+                    }else{
+                        //System.out.println("Surprise");
+                    }
+                }else if (fonction==2){
+                    if (tabJoueur.contains(listVictime.get(1))){
+                        tabJoueur.remove(listVictime.get(1));
+                        supprimerVillageois(this,listVictime.get(1).getNom());
 
-        int fonction = victime1 + ra.nextInt(victime2-victime1);
-        for (int i=0; i<listVictime.size();i++){
-            if (fonction==1){
-                if (tabJoueur.contains(listVictime.get(0))){
-                    tabJoueur.remove(listVictime.get(0));
-                    supprimerVillageois(this,listVictime.get(0).getNom());
-                }else{
-                    //System.out.println("Surprise");
+                    }else{
+                        System.out.println("Surprise 4");
+                    }
+                }else {
+                    System.out.println("ghghhg");
                 }
-            }else if (fonction==2){
-                if (tabJoueur.contains(listVictime.get(1))){
-                    tabJoueur.remove(listVictime.get(1));
-                    supprimerVillageois(this,listVictime.get(1).getNom());
-
-                }else{
-                    System.out.println("Surprise 4");
-                }
-            }else {
-                System.out.println("ghghhg");
             }
+        }
+        else{
+            System.out.println("un loup");
+            supprimerVillageois(this,listVictime.get(0).getNom());
         }
 
         System.out.println(tabJoueur+" Nouveau tab joueurs");
         System.out.println(listVictime+" liste des victimes");
+        if(verifFinPartie(this)){
+            System.out.println("probleme");
+            finPartie(this);
+        }
     }
 
 
@@ -172,7 +205,6 @@ public class Jeu {
         Villageois v = new Villageois(j.getNom(),j.getCarte());
         listVilla.add(v);
         //System.out.println(listVilla+" liste villa "+v.getNumVillageois());
-
     }
 
 
@@ -183,8 +215,19 @@ public class Jeu {
         Random ra = new Random();
         int fonction = min + ra.nextInt(max-min);
                if ((fonction==2) && (listLp.size()!=2)){
+
                    LoupGarous lp = new LoupGarous(j.getNom());
                    listLp.add(lp);
+                       for(int k =0;k<listLp.size();k++){
+                           for(int i =0;i<listVilla.size();i++){
+                           if(listVilla.get(i).getNom().equals(listLp.get(k).getNom())){
+                               System.out.println(listVilla.get(i).getNom());
+                               System.out.println(j.getNom());
+                               listVilla.remove(listVilla.get(i));
+                           }
+                       }
+
+                   }
                }
         //System.out.println(listLp+" Liste LP");
         //System.out.println(tabJoueur+" Liste Joueur");
@@ -212,24 +255,26 @@ public class Jeu {
         else{
             return false;
         }
-
     }
 
     public void finPartie(Jeu j){
         if(listLp.isEmpty()){
             System.out.println("Fin de la partie. Les villageois remportent la victoire !");
+            System.exit(0);
         }
         else{
             System.out.println("Fin de la partie. Les loup garous remportent la victoire !");
-
+            System.exit(0);
         }
     }
 
     public void supprimerVillageois(Jeu j,String n){
         for (int i=0;i<listVilla.size();i++){
-            if(listVilla.get(i).getNom()==n){
+            if(listVilla.get(i).getNom()==n) {
                 listVilla.remove(listVilla.get(i));
+                tabJoueur.remove(listVictime.get(0));
             }
+
         }
     }
 
@@ -249,10 +294,46 @@ public class Jeu {
                 return trouve;
             }
         }
-
-
         return trouve;
     }
+
+
+    public boolean choixVote(Jeu j,int[] vote){
+        int max = Arrays.stream(vote).max().getAsInt();
+        int nb = nbOccurences(vote,max);
+
+        if(nb==1){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
+    public int nbOccurences(int[] vote,int max){
+        int compteur = 0;
+
+        for(int i=0;i<this.tabJoueur.size();i++){
+            if(vote[i] == max){
+                compteur++;
+            }
+        }
+
+        return compteur;
+    }
+
+
+    public int getNumVillageois(Jeu j,String nom){
+        System.out.println("test");
+        for(int i=0;i<j.listVilla.size();i++){
+
+            if(j.listVilla.get(i).getNom().equals(nom)){
+                return i;
+            }
+        }
+        return -1;
+    }
+
 
 
 
