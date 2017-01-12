@@ -5,6 +5,8 @@
  */
 package com.company.Jeu;
 
+import com.sun.org.apache.xpath.internal.SourceTree;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
@@ -50,67 +52,47 @@ public class Jeu {
             joueurJeu++;
 
         }
+        while (!(verifFinPartie(this))){
+            goNuit();
+            choixVictime();
+            goJour();
+        }
+        finPartie(this);
 
-        goNuit();
-        choixVictime();
-        goJour();
 
     }
 
-    public void choixVictime(){
+    public void choixVictime() {
 
         this.listVictime = new ArrayList<>();
-        int victime1=1;
-        int victime2=3;
+        boolean b = false;
+        int victime1 = 1;
+        int victime2 = 3;
         Random ra = new Random();
-        int numVictime;
-        int nbLP=1;
-        for (int i =0; i<listLp.size();i++){
-            Scanner sc = new Scanner(System.in);
-            System.out.println("Loup garou "+nbLP+" , veuillez saisir une victime :");
-            numVictime = sc.nextInt();
-            if (numVictime==1){
+        String numVictime;
+        int nbLP = 1;
 
-                listVictime.add(tabJoueur.get(0));
-            }else if (numVictime==2){
-                listVictime.add(tabJoueur.get(1));
+        for (int i = 0; i < listLp.size(); i++) {
+            while (!(b)) {
+                Scanner sc = new Scanner(System.in);
+                System.out.println("Loup garou " + nbLP + " , veuillez saisir une victime :");
+                numVictime = sc.next();
+                //System.out.println(tabJoueur.get(0).getNom());
 
-            }else if (numVictime==3){
-                listVictime.add(tabJoueur.get(2));
+                for (int j = 0; j < tabJoueur.size(); j++) {
 
-            }else if (numVictime==4){
-                listVictime.add(tabJoueur.get(3));
+                        if (tabJoueur.get(j).getNom().contains(numVictime)) {
 
-            }else if (numVictime==5){
-                listVictime.add(tabJoueur.get(4));
-            }else if (numVictime==6){
-                listVictime.add(tabJoueur.get(5));
+                            listVictime.add(tabJoueur.get(j));
+                            b = true;
 
-            }else if (numVictime==7){
-                listVictime.add(tabJoueur.get(6));
-
-
-            }else if (numVictime==8){
-                listVictime.add(tabJoueur.get(7));
-
-            }else if (numVictime==9){
-                listVictime.add(tabJoueur.get(8));
-
-            }else if (numVictime==10){
-                listVictime.add(tabJoueur.get(9));
-
-
-            }else if (numVictime==11){
-                listVictime.add(tabJoueur.get(10));
-
-
-            }else if (numVictime==12){
-                listVictime.add(tabJoueur.get(11));
-
-
+                        } else if (tabJoueur.size()==j) {
+                            System.out.println("Ce joueur n'existe pas, veuillez réésayer :");
+                        }
+                    }
             }
+            b = false;
             nbLP++;
-
         }
 
         int fonction = victime1 + ra.nextInt(victime2-victime1);
@@ -118,12 +100,15 @@ public class Jeu {
             if (fonction==1){
                 if (tabJoueur.contains(listVictime.get(0))){
                     tabJoueur.remove(listVictime.get(0));
+                    supprimerVillageois(this,listVictime.get(0).getNom());
                 }else{
                     System.out.println("Surprise");
                 }
             }else if (fonction==2){
                 if (tabJoueur.contains(listVictime.get(1))){
                     tabJoueur.remove(listVictime.get(1));
+                    supprimerVillageois(this,listVictime.get(1).getNom());
+
                 }else{
                     System.out.println("Surprise 4");
                 }
@@ -134,10 +119,8 @@ public class Jeu {
 
         System.out.println(tabJoueur+" Nouveau tab joueurs");
         System.out.println(listVictime+" liste des victimes");
-        listVictime.clear();
-        System.out.println(listVictime+" liste des victimes 2");
-
     }
+
 
     public void becomeVillageois(Joueur j){
 
@@ -176,9 +159,34 @@ public class Jeu {
 
     }
 
-    public ArrayList<Joueur> getTabJoueur() {
-        return tabJoueur;
+    public boolean verifFinPartie(Jeu j){
+        if(listLp.isEmpty() || listVilla.isEmpty()){
+            return true;
+        }
+        else{
+            return false;
+        }
+
     }
+
+    public void finPartie(Jeu j){
+        if(listLp.isEmpty()){
+            System.out.println("Fin de la partie. Les villageois remportent la victoire !");
+        }
+        else{
+            System.out.println("Fin de la partie. Les loup garous remportent la victoire !");
+
+        }
+    }
+
+    public void supprimerVillageois(Jeu j,String n){
+        for (int i=0;i<listVilla.size();i++){
+            if(listVilla.get(i).getNom()==n){
+                listVilla.remove(listVilla.get(i));
+            }
+        }
+    }
+
 
     public void setTabJoueur(ArrayList<Joueur> tabJoueur) {
         this.tabJoueur = tabJoueur;
