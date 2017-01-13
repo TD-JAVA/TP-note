@@ -60,9 +60,9 @@ public class Jeu {
 
             numCarte+=1;
             joueurJeu++;
-            System.out.println(listLp);
+            //System.out.println(listLp);
         }
-        while (!(verifFinPartie(this))){
+        while (!(verifFinPartie(this))){ // Si les critères de fin de partie sont remplies, on arrête le jeu
             goNuit();
             choixVictime();
             goJour();
@@ -72,7 +72,7 @@ public class Jeu {
 
 
     }
-
+    //Méthode qui demande aux villageois de choisir une victime
     public void choixVillageois() {
         String nom = "";
         boolean b = false;
@@ -127,9 +127,8 @@ public class Jeu {
 
 
 
-
+    ////Méthode qui demande aux loups garous de choisir une victime
     public void choixVictime() {
-        System.out.println(tabJoueur.get(0).getCarte());
         this.listVictime = new ArrayList<>();
         boolean b = false;
         int victime1 = 1;
@@ -138,23 +137,19 @@ public class Jeu {
         String numVictime;
         int nbLP = 1;
 
-        for (int i = 0; i < listLp.size(); i++) {
-
-            while (!(b)) {
+        for (int i = 0; i < listLp.size(); i++) { //Pour chaque loup garou
+            while (!(b)) { // Tant que la victime entrée n'est pas valide
                 Scanner sc = new Scanner(System.in);
                 System.out.println("Loup garou " + nbLP + " , veuillez saisir une victime :");
                 System.out.println("Voici la liste des victimes disponibles :"+listVilla);
                 numVictime = sc.next();
-                //System.out.println(tabJoueur.get(0).getNom());
+
 
                 for (int j = 0; j < tabJoueur.size(); j++) {
-
-                        if (tabJoueur.get(j).getNom().contains(numVictime)) {
-
+                        if (tabJoueur.get(j).getNom().contains(numVictime)) {// on vérifie que le joueur existe
                             listVictime.add(tabJoueur.get(j));
                             b = true;
                             System.out.print("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
-
                         } else if (tabJoueur.size()==j) {
                             System.out.println("Ce joueur n'existe pas, veuillez réésayer :");
                         }
@@ -163,7 +158,7 @@ public class Jeu {
             b = false;
             nbLP++;
         }
-        if (listLp.size() != 1) {
+        if (listLp.size() != 1) { // S'il il y a plus d'un loup garou
             int fonction = victime1 + ra.nextInt(victime2-victime1);
             for (int i=0; i<listVictime.size();i++){
                 if (fonction==1){
@@ -186,9 +181,9 @@ public class Jeu {
                 }
             }
         }
-        else{
+        else{ //Si il reste un seul loup garou
             System.out.println("un loup");
-            supprimerVillageois(this,listVictime.get(0).getNom());
+            supprimerVillageois(this,listVictime.get(0).getNom()); // on supprime directement le joueur sans passer par le choix aléatoire d'une victime
         }
 
         System.out.println(tabJoueur+" Nouveau tab joueurs");
@@ -200,7 +195,7 @@ public class Jeu {
     }
 
 
-    public void becomeVillageois(Joueur j){
+    public void becomeVillageois(Joueur j){  //ajoute un joueur à la liste des villageois
 
         Villageois v = new Villageois(j.getNom(),j.getCarte());
         listVilla.add(v);
@@ -209,7 +204,7 @@ public class Jeu {
 
 
 
-    public void role(Joueur j) {
+    public void role(Joueur j) { //Ajoute ou non(aléatoire) un joueur à la liste des loups garous s'il ils ne sont pas 2
         int max = 3;
         int min = 1;
         Random ra = new Random();
@@ -221,8 +216,7 @@ public class Jeu {
                        for(int k =0;k<listLp.size();k++){
                            for(int i =0;i<listVilla.size();i++){
                            if(listVilla.get(i).getNom().equals(listLp.get(k).getNom())){
-                               System.out.println(listVilla.get(i).getNom());
-                               System.out.println(j.getNom());
+
                                listVilla.remove(listVilla.get(i));
                            }
                        }
@@ -234,21 +228,21 @@ public class Jeu {
     }
 
 
-    public void goNuit() {
+    public void goNuit() {  //Passage au cycle nuit
         nuit=true;
         System.out.println("///////// La nuit est là ! ///////////");
         System.out.println(" Voici la liste actuelle des joueurs "+tabJoueur);
 
     }
 
-    public void goJour() {
+    public void goJour() { //Passage au cycle jour
         nuit=false;
         System.out.println("///////// Le jour se lève ! ///////////");
         System.out.println(" Voici la liste actuelle des joueurs "+tabJoueur+"\n");
 
     }
 
-    public boolean verifFinPartie(Jeu j){
+    public boolean verifFinPartie(Jeu j){ //On vérifie qu'il existe toujours au moins un villageois et un loup
         if(listLp.isEmpty() || listVilla.isEmpty()){
             return true;
         }
@@ -257,7 +251,7 @@ public class Jeu {
         }
     }
 
-    public void finPartie(Jeu j){
+    public void finPartie(Jeu j){ //On arrête le jeu
         if(listLp.isEmpty()){
             System.out.println("Fin de la partie. Les villageois remportent la victoire !");
             System.exit(0);
@@ -268,28 +262,28 @@ public class Jeu {
         }
     }
 
-    public void supprimerVillageois(Jeu j,String n){
-        for (int i=0;i<listVilla.size();i++){
-            if(listVilla.get(i).getNom()==n) {
-                listVilla.remove(listVilla.get(i));
-                tabJoueur.remove(listVictime.get(0));
+    public void supprimerVillageois(Jeu j,String n){  //On supprime un villageois en le cherchant dans la liste avec son nom
+        for (int i=0;i<listVilla.size();i++){ // on parcourt la liste des villageois
+            if(listVilla.get(i).getNom()==n) { //Si le nom est égal au paramètre n
+                listVilla.remove(listVilla.get(i)); // on le supprime de la liste des villageois
+                tabJoueur.remove(listVictime.get(0)); //on le supprime de la liste des joueurs
             }
 
         }
     }
 
-    public void supprimerLoup(Jeu j,String n){
+    /*public void supprimerLoup(Jeu j,String n){
         for (int i=0;i<listLp.size();i++){
             if(listLp.get(i).getNom()==n){
                 listLp.remove(listLp.get(i));
             }
         }
-    }
+    }*/
 
-    public boolean verifDoublonNom(Jeu j,String nom){
+    public boolean verifDoublonNom(Jeu j,String nom){ // On vérifie que le nom n'existe pas déjà
         boolean trouve = false;
         for(int i=0;i<j.tabJoueur.size();i++){
-            if(j.tabJoueur.get(i).getNom().equals(nom)){
+            if(j.tabJoueur.get(i).getNom().equals(nom)){ //Si le nom existe déjà
                 trouve=true;
                 return trouve;
             }
@@ -298,9 +292,9 @@ public class Jeu {
     }
 
 
-    public boolean choixVote(Jeu j,int[] vote){
-        int max = Arrays.stream(vote).max().getAsInt();
-        int nb = nbOccurences(vote,max);
+    public boolean choixVote(Jeu j,int[] vote){  // On vérifie qu'il n'y a pas une égalité dans les votes
+        int max = Arrays.stream(vote).max().getAsInt();  // nb maximal de votes reçus
+        int nb = nbOccurences(vote,max); // On compte le nombres d'occurences de max de votes
 
         if(nb==1){
             return true;
@@ -310,12 +304,12 @@ public class Jeu {
         }
     }
 
-    public int nbOccurences(int[] vote,int max){
+    public int nbOccurences(int[] vote,int max){ // Méthode qui compte le nombres d'occurences de max de votes
         int compteur = 0;
 
         for(int i=0;i<this.tabJoueur.size();i++){
-            if(vote[i] == max){
-                compteur++;
+            if(vote[i] == max){  // si max est égal à au nb de votes de la peronne courante
+                compteur++; // on incrémente
             }
         }
 
@@ -323,12 +317,11 @@ public class Jeu {
     }
 
 
-    public int getNumVillageois(Jeu j,String nom){
+    public int getNumVillageois(Jeu j,String nom){  //On récupère l'index d'un villageois grace à son nom
         System.out.println("test");
         for(int i=0;i<j.listVilla.size();i++){
-
-            if(j.listVilla.get(i).getNom().equals(nom)){
-                return i;
+            if(j.listVilla.get(i).getNom().equals(nom)){ // Si les noms sont égaux
+                return i;  // on retourne l'index
             }
         }
         return -1;
