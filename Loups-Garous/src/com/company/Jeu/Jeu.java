@@ -35,9 +35,15 @@ public class Jeu {
         Scanner sc = new Scanner(System.in);
         int numCarte = 1;
         int joueurJeu=1;
-        System.out.println("Bienvenue dans le jeu du Loup Garou, pour commencer à jouer, veuillez indiquer le nombre de joueurs participant au jeu :");
-
+        System.out.println("Bienvenue dans le jeu du Loup Garou,\n Le jeu se déroule de la façon suivante :  \n On entre le nombre de joueurs participant au jeu(de 8 à 12), chaque joueur entre son nom et 2 d'entre eux auront le rôle de loup garou, les autres seront des villageois. \n Ensuite le jeu se déroulera en deux cycle, le jour où les villageois voteront afin de tuer le joueur qu'ils soupçonnent d'être un loup garou, et ensuite la nuit, où les loups garous choisissent une victime. \n Le jeu s'arrête dès qu'il n'y a plus de villageois ou que tous les loups garous sont mort. Bon jeu à tous ! \n\n\n Pour commencer à jouer,  veuillez indiquer le nombre de joueurs participant au jeu :");
         this.nbJoueurs = sc.nextInt(); // On récupère le nombre de joueurs
+
+        while(this.nbJoueurs<8 || (this.nbJoueurs>12)){
+            System.out.println("Veuillez saisir un nombre de joueur compris entre 8 et 12 :");
+            sc = new Scanner(System.in);
+            this.nbJoueurs = sc.nextInt(); // On récupère le nombre de joueurs
+        }
+
         //On créé les joueurs et on les ajoutent au tableau des joueurs tabJoueur  <=== Erreur de collection == liste et pas tab
         for (int i = 0; i < nbJoueurs; i++) {
             String nom;
@@ -47,7 +53,7 @@ public class Jeu {
             Scanner sc2 = new Scanner(System.in);
             nom = sc2.nextLine();
 
-            while(verifDoublonNom(this,nom)){
+            while(verifDoublonNom(this,nom) ){
                 System.out.println("Ce nom existe déjà ! Veuillez entrer un autre nom");
                 sc2 = new Scanner(System.in);
                 nom = sc2.nextLine();
@@ -60,7 +66,7 @@ public class Jeu {
 
             numCarte+=1;
             joueurJeu++;
-            //System.out.println(listLp);
+
         }
         while (!(verifFinPartie(this))){ // Si les critères de fin de partie sont remplies, on arrête le jeu
             goNuit();
@@ -82,6 +88,7 @@ public class Jeu {
             while (!(b)) {
                 Scanner sc = new Scanner(System.in);
                 System.out.println(tabJoueur.get(i).getNom() + " , veuillez saisir un villageois qui selon vous est un loup garou :");
+                System.out.println("Veuillez taper le nom d'un des joueurs disponibles : "+tabJoueur);
                 nom = sc.nextLine();
                 for (int j = 0; j < tabJoueur.size(); j++) {
 
@@ -96,18 +103,23 @@ public class Jeu {
             }
             b = false;
         }
-        System.out.println("tableau des votes :"+Arrays.toString(vote));
+        System.out.println("tableau des votes :  "+tabJoueur);
+        System.out.println("tableau des joueurs :"+Arrays.toString(vote));
         if(choixVote(this,vote)){
             for (int k = 0; k < tabJoueur.size(); k++) {
                 if(vote[k]  == Arrays.stream(vote).max().getAsInt()){
                     System.out.println("Les villageois ont choisi la victime ! "+tabJoueur.get(k).getNom()+" est éxécuté !");
 
                     for(int l=0;l<listLp.size();l++){
-                        if((tabJoueur.get(k).getNom()==listLp.get(l).getNom())){
+                        //System.out.println("liste lg:"+listLp.get(l).getNom());
+                        if((tabJoueur.get(k).getNom().equals(listLp.get(l).getNom()))){
                             System.out.println(tabJoueur.get(k).getNom()+" était un loup !");
                             listLp.remove(listLp.get(l));
                         }
                         else{
+                            //System.out.println("premier test avant méthode :"+listVilla);
+                            //System.out.println("deuxieme test avant méthode :"+listLp);
+
                             int numVillageois = getNumVillageois(this,tabJoueur.get(k).getNom());
                             listVilla.remove(listVilla.get(numVillageois));
                             l= tabJoueur.size();
@@ -141,7 +153,7 @@ public class Jeu {
             while (!(b)) { // Tant que la victime entrée n'est pas valide
                 Scanner sc = new Scanner(System.in);
                 System.out.println("Loup garou " + nbLP + " , veuillez saisir une victime :");
-                System.out.println("Voici la liste des victimes disponibles :"+listVilla);
+                System.out.println("Voici la liste des victimes disponibles, veuillez entrer le nom de la personne que vous souhaitez tuer :"+listVilla);
                 numVictime = sc.next();
 
 
@@ -163,6 +175,7 @@ public class Jeu {
             for (int i=0; i<listVictime.size();i++){
                 if (fonction==1){
                     if (tabJoueur.contains(listVictime.get(0))){
+                        System.out.println("Les loups garous ont sévit, la victime est "+listVictime.get(0).getNom());
                         tabJoueur.remove(listVictime.get(0));
                         supprimerVillageois(this,listVictime.get(0).getNom());
                     }else{
@@ -170,26 +183,25 @@ public class Jeu {
                     }
                 }else if (fonction==2){
                     if (tabJoueur.contains(listVictime.get(1))){
+                        System.out.println("Les loups garous ont sévit, la victime est "+listVictime.get(1).getNom());
                         tabJoueur.remove(listVictime.get(1));
                         supprimerVillageois(this,listVictime.get(1).getNom());
 
                     }else{
-                        System.out.println("Surprise 4");
+                        //System.out.println("Surprise 4");
                     }
                 }else {
-                    System.out.println("ghghhg");
+                    //System.out.println("ghghhg");
                 }
             }
         }
         else{ //Si il reste un seul loup garou
-            System.out.println("un loup");
             supprimerVillageois(this,listVictime.get(0).getNom()); // on supprime directement le joueur sans passer par le choix aléatoire d'une victime
         }
 
-        System.out.println(tabJoueur+" Nouveau tab joueurs");
-        System.out.println(listVictime+" liste des victimes");
+        //System.out.println(tabJoueur+" Nouveau tab joueurs");
+        //System.out.println(listVictime+" liste des victimes");
         if(verifFinPartie(this)){
-            System.out.println("probleme");
             finPartie(this);
         }
     }
@@ -231,14 +243,14 @@ public class Jeu {
     public void goNuit() {  //Passage au cycle nuit
         nuit=true;
         System.out.println("///////// La nuit est là ! ///////////");
-        System.out.println(" Voici la liste actuelle des joueurs "+tabJoueur);
+        //System.out.println(" Voici la liste actuelle des joueurs "+tabJoueur);
 
     }
 
     public void goJour() { //Passage au cycle jour
         nuit=false;
         System.out.println("///////// Le jour se lève ! ///////////");
-        System.out.println(" Voici la liste actuelle des joueurs "+tabJoueur+"\n");
+        //System.out.println(" Voici la liste actuelle des joueurs "+tabJoueur+"\n");
 
     }
 
@@ -318,7 +330,6 @@ public class Jeu {
 
 
     public int getNumVillageois(Jeu j,String nom){  //On récupère l'index d'un villageois grace à son nom
-        System.out.println("test");
         for(int i=0;i<j.listVilla.size();i++){
             if(j.listVilla.get(i).getNom().equals(nom)){ // Si les noms sont égaux
                 return i;  // on retourne l'index
